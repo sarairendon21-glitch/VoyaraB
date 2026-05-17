@@ -12,9 +12,20 @@
 			<div class="loader-box">
 				<div class="flight-search-loader">
 					<h1 class="loader-title">Voyara</h1>
-					<div class="airplane-track">
-						<img src="plane-icon.webp" alt="airplane" class="airplane-animated" />
-						<div class="airplane-shadow"></div>
+					<div class="airplane-scene">
+						<!-- Clouds background -->
+						<div class="cloud cloud-1"></div>
+						<div class="cloud cloud-2"></div>
+						<div class="cloud cloud-3"></div>
+						
+						<!-- Airplane track with runway -->
+						<div class="airplane-track">
+							<img src="avion-comercial.png" alt="airplane" class="airplane-animated" />
+							<div class="airplane-shadow"></div>
+						</div>
+						
+						<!-- Runway -->
+						<div class="runway"></div>
 					</div>
 					<p class="loader-text">Cargando...</p>
 				</div>
@@ -343,6 +354,31 @@
 			</div>
 
 			<footer class="footer">&copy; <span id="year"></span> Voyara</footer>
+		</div>
+
+		<!-- Chatbot Flotante -->
+		<div id="chatbot-container" class="chatbot-container">
+			<!-- Botón flotante -->
+			<button id="chatbot-toggle" class="chatbot-toggle" title="Abrir chat">
+				<span class="chatbot-icon">💬</span>
+			</button>
+
+			<!-- Panel del chat -->
+			<div id="chatbot-panel" class="chatbot-panel hidden">
+				<div class="chatbot-header">
+					<h3>Asistente Voyara</h3>
+					<button id="chatbot-close" class="chatbot-close">&times;</button>
+				</div>
+				<div id="chatbot-messages" class="chatbot-messages">
+					<div class="chatbot-message bot-message">
+						<p>¡Hola! Soy el asistente de Voyara. ¿En qué puedo ayudarte?</p>
+					</div>
+				</div>
+				<div class="chatbot-input-area">
+					<input id="chatbot-input" type="text" placeholder="Escribe tu mensaje..." />
+					<button id="chatbot-send" class="chatbot-send">Enviar</button>
+				</div>
+			</div>
 		</div>
 
 		<script src="script.js"></script>

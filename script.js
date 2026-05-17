@@ -769,3 +769,74 @@ if(petFlightForm){
     }
   });
 }
+
+// ===== CHATBOT FLOTANTE =====
+const chatbotToggle = document.getElementById('chatbot-toggle');
+const chatbotPanel = document.getElementById('chatbot-panel');
+const chatbotClose = document.getElementById('chatbot-close');
+const chatbotInput = document.getElementById('chatbot-input');
+const chatbotSend = document.getElementById('chatbot-send');
+const chatbotMessages = document.getElementById('chatbot-messages');
+
+const botResponses = [
+  '¿Qué destino te gustaría visitar?',
+  'Tenemos excelentes ofertas para familias.',
+  '¿Necesitas ayuda con hoteles, transporte o vuelos?',
+  'Nuestros precios son los más competitivos del mercado.',
+  '¿Viajas con mascotas? Tenemos servicios especiales.',
+  '¿En qué puedo ayudarte hoy?',
+  'Puedo asistirte con reservas de vuelos, hoteles y transporte.',
+];
+
+// Toggle chatbot
+if(chatbotToggle){
+  chatbotToggle.addEventListener('click', ()=>{
+    chatbotPanel.classList.toggle('hidden');
+  });
+}
+
+// Close chatbot
+if(chatbotClose){
+  chatbotClose.addEventListener('click', ()=>{
+    chatbotPanel.classList.add('hidden');
+  });
+}
+
+// Send message
+function sendChatMessage(){
+  const message = chatbotInput.value.trim();
+  if(!message) return;
+
+  // User message
+  const userDiv = document.createElement('div');
+  userDiv.className = 'chatbot-message user-message';
+  userDiv.innerHTML = `<p>${message}</p>`;
+  chatbotMessages.appendChild(userDiv);
+
+  chatbotInput.value = '';
+
+  // Bot response (after delay)
+  setTimeout(()=>{
+    const botResponse = botResponses[Math.floor(Math.random() * botResponses.length)];
+    const botDiv = document.createElement('div');
+    botDiv.className = 'chatbot-message bot-message';
+    botDiv.innerHTML = `<p>${botResponse}</p>`;
+    chatbotMessages.appendChild(botDiv);
+
+    // Auto-scroll to bottom
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+  }, 500);
+
+  // Auto-scroll to bottom
+  chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+}
+
+if(chatbotSend){
+  chatbotSend.addEventListener('click', sendChatMessage);
+}
+
+if(chatbotInput){
+  chatbotInput.addEventListener('keypress', (e)=>{
+    if(e.key === 'Enter') sendChatMessage();
+  });
+}
