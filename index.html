@@ -7,12 +7,17 @@
 		<link rel="stylesheet" href="estyles.css" />
 	</head>
 	<body>
-		<!-- Loading page -->
+		<!-- Loading page with animated airplane -->
 		<main id="loading-view" class="view loading-container">
 			<div class="loader-box">
-				<h1 class="loader-title">Voyara</h1>
-				<div class="spinner"></div>
-				<p class="loader-text">Cargando...</p>
+				<div class="flight-search-loader">
+					<h1 class="loader-title">Voyara</h1>
+					<div class="airplane-track">
+						<div class="airplane-animated">✈️</div>
+						<div class="airplane-shadow"></div>
+					</div>
+					<p class="loader-text">Cargando...</p>
+				</div>
 			</div>
 		</main>
 
@@ -57,9 +62,50 @@
 			<div class="content-wrapper">
 				<!-- Home section (carrusel) -->
 				<section id="home-view" class="app-section">
-					<section class="hero">
-						<h1 class="hero-title">Bienvenido a Voyara</h1>
-						<p>Descubre los destinos turísticos más visitados del mundo.</p>
+					<!-- Flight Search Section -->
+					<section class="flight-search-section">
+						<h2 style="text-align:center; margin-bottom:20px;">Buscar tu vuelo</h2>
+						<form id="flight-search-form" class="flight-search-form">
+							<div class="search-options">
+								<label class="radio-label">
+									<input type="radio" name="trip-type" value="roundtrip" checked /> Ida y vuelta
+								</label>
+								<label class="radio-label">
+									<input type="radio" name="trip-type" value="oneway" /> Solo ida
+								</label>
+							</div>
+
+							<div class="search-fields">
+								<div class="search-field">
+									<label>Origen</label>
+									<input id="search-origin" type="text" placeholder="Ej: Bogotá (BOG)" required />
+								</div>
+								<div class="search-field">
+									<label>Destino</label>
+									<input id="search-destination" type="text" placeholder="Ej: París (CDG)" required />
+								</div>
+								<div class="search-field">
+									<label>Ida</label>
+									<input id="search-departure" type="date" required />
+								</div>
+								<div class="search-field" id="return-date-field">
+									<label>Vuelta</label>
+									<input id="search-return" type="date" required />
+								</div>
+								<div class="search-field">
+									<label>Pasajeros</label>
+									<select id="search-passengers">
+										<option value="1">1 pasajero</option>
+										<option value="2">2 pasajeros</option>
+										<option value="3">3 pasajeros</option>
+										<option value="4">4 pasajeros</option>
+										<option value="5">5 pasajeros</option>
+										<option value="6">6 pasajeros</option>
+									</select>
+								</div>
+								<button type="submit" class="search-btn primary">Buscar</button>
+							</div>
+						</form>
 					</section>
 
 					<!-- Intro / Lema -->

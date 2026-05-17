@@ -695,6 +695,43 @@ window.addEventListener('DOMContentLoaded', ()=>{
   renderTransportModels();
 });
 
+// Flight Search Form Handler
+const flightSearchForm = document.getElementById('flight-search-form');
+const returnDateField = document.getElementById('return-date-field');
+const tripTypeRadios = document.querySelectorAll('input[name="trip-type"]');
+
+if(tripTypeRadios.length > 0){
+  tripTypeRadios.forEach(radio => {
+    radio.addEventListener('change', (e)=>{
+      if(returnDateField){
+        returnDateField.style.display = e.target.value === 'roundtrip' ? 'flex' : 'none';
+        const returnInput = document.getElementById('search-return');
+        if(returnInput && e.target.value === 'oneway') returnInput.removeAttribute('required');
+        if(returnInput && e.target.value === 'roundtrip') returnInput.setAttribute('required', 'required');
+      }
+    });
+  });
+}
+
+if(flightSearchForm){
+  flightSearchForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const origin = document.getElementById('search-origin').value.trim();
+    const destination = document.getElementById('search-destination').value.trim();
+    const departure = document.getElementById('search-departure').value;
+    const tripType = document.querySelector('input[name="trip-type"]:checked').value;
+    const returnDate = tripType === 'roundtrip' ? document.getElementById('search-return').value : null;
+    const passengers = document.getElementById('search-passengers').value;
+    
+    if(!origin || !destination || !departure){ alert('Por favor completa los campos requeridos.'); return; }
+    if(tripType === 'roundtrip' && !returnDate){ alert('Por favor selecciona fecha de vuelta.'); return; }
+    
+    const searchParams = { origin, destination, departure, returnDate, tripType, passengers };
+    sessionStorage.setItem('voyara_flight_search', JSON.stringify(searchParams));
+    alert(`Búsqueda: ${origin} → ${destination}\nIda: ${departure}\n${tripType === 'roundtrip' ? 'Vuelta: ' + returnDate : 'Solo ida'}\nPasajeros: ${passengers}`);
+  });
+}
+
 // Pet flight ticket form handler (simulado)
 const petFlightForm = document.getElementById('pet-flight-form');
 if(petFlightForm){
