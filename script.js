@@ -8,9 +8,13 @@ const PLACES = [
 ];
 
 // DOM
-const loginView = document.getElementById('login-view');
+const loadingView = document.getElementById('loading-view');
 const appView = document.getElementById('app-view');
+const loginModal = document.getElementById('login-modal');
+const closeLoginBtn = document.getElementById('close-login');
 const loginForm = document.getElementById('login-form');
+const loginHeaderBtn = document.getElementById('login-header-btn');
+const logoutBtn = document.getElementById('logout-btn');
 const greeting = document.getElementById('greeting');
 const year = document.getElementById('year');
 
@@ -21,6 +25,37 @@ const nextBtn = document.getElementById('next');
 
 let currentIndex = 0;
 let autoplayId = null;
+
+// Initialize app: show loading page, then app after 2 seconds
+function initializeApp(){
+  if(loadingView) loadingView.classList.remove('hidden');
+  if(appView) appView.classList.add('hidden');
+  
+  setTimeout(()=>{
+    if(loadingView) loadingView.classList.add('hidden');
+    if(appView) appView.classList.remove('hidden');
+    startAutoplay();
+  }, 2000);
+}
+
+// Handle login modal
+function openLoginModal(){
+  if(loginModal) loginModal.classList.remove('hidden');
+}
+
+function closeLoginModal(){
+  if(loginModal) loginModal.classList.add('hidden');
+}
+
+if(closeLoginBtn) closeLoginBtn.addEventListener('click', closeLoginModal);
+if(loginHeaderBtn) loginHeaderBtn.addEventListener('click', openLoginModal);
+
+// Close modal when clicking outside
+if(loginModal){
+  loginModal.addEventListener('click', (e)=>{
+    if(e.target === loginModal) closeLoginModal();
+  });
+}
 
 function renderSlides(){
   if(!slidesEl) return;
@@ -614,19 +649,26 @@ if(loginForm){
     const password = document.getElementById('password').value;
     if(!username || !password){ alert('Por favor ingresa nombre y contraseña.'); return; }
     sessionStorage.setItem('voyara_user', username);
-    openApp();
+    loginUser();
   });
 }
 
-function openApp(){
+function loginUser(){
   const user = sessionStorage.getItem('voyara_user') || 'Usuario';
   if(greeting) greeting.textContent = `Hola, ${user}`;
-  if(loginView) loginView.classList.add('hidden');
-  if(appView) appView.classList.remove('hidden');
+  if(loginHeaderBtn) loginHeaderBtn.style.display = 'none';
+  if(logoutBtn) logoutBtn.style.display = 'block';
+  closeLoginModal();
+  document.getElementById('username').value = '';
+  document.getElementById('password').value = '';
 }
 
-const logoutBtn = document.getElementById('logout-btn');
-if(logoutBtn) logoutBtn.addEventListener('click', ()=>{ sessionStorage.removeItem('voyara_user'); if(appView) appView.classList.add('hidden'); if(loginView) loginView.classList.remove('hidden'); });
+if(logoutBtn) logoutBtn.addEventListener('click', ()=>{ 
+  sessionStorage.removeItem('voyara_user'); 
+  if(greeting) greeting.textContent = '';
+  if(loginHeaderBtn) loginHeaderBtn.style.display = 'block';
+  if(logoutBtn) logoutBtn.style.display = 'none';
+});
 
 if(prevBtn) prevBtn.addEventListener('click', ()=> { showSlide(currentIndex - 1); startAutoplay(); });
 if(nextBtn) nextBtn.addEventListener('click', ()=> { showSlide(currentIndex + 1); startAutoplay(); });
@@ -641,8 +683,13 @@ window.addEventListener('DOMContentLoaded', ()=>{
   renderSlides();
   showSlide(0);
   setupNav();
-  startAutoplay();
-  if(sessionStorage.getItem('voyara_user')) openApp();
+  initializeApp();
+  if(sessionStorage.getItem('voyara_user')) {
+    const user = sessionStorage.getItem('voyara_user');
+    if(greeting) greeting.textContent = `Hola, ${user}`;
+    if(loginHeaderBtn) loginHeaderBtn.style.display = 'none';
+    if(logoutBtn) logoutBtn.style.display = 'block';
+  }
   if(year) year.textContent = new Date().getFullYear();
   // transport models
   renderTransportModels();
